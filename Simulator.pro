@@ -8,10 +8,18 @@ SOURCES += \
         functional.cpp \
         main.cpp \
         modelimpl.cpp \
-        systemimpl.cpp
+        systemimpl.cpp \
+        unitary.cpp \
+        unitarytestsflow.cpp \
+        unitarytestsmodel.cpp \
+        unitarytestssystem.cpp
 
 HEADERS += \
     flowimpl.h \
     functional.h \
     modelimpl.h \
-    systemimpl.h
+    systemimpl.h \
+    unitary.h \
+    unitarytestsflow.h \
+    unitarytestsmodel.h \
+    unitarytestssystem.h

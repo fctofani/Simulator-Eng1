@@ -120,5 +120,7 @@ ModelImpl::~ModelImpl()
 
 ModelImpl::ModelImpl()
 {
-
+    start = 0;
+    finish = 100;
+    name = "-";
 }

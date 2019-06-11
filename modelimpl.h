@@ -22,9 +22,9 @@ public:
     void setStart(int value);
     int getFinish() const;
     void setFinish(int value);
-    list<FlowImpl *> getFlowContainer() const;
+    list<FlowImpl*> getFlowContainer() const;
     void setFlowContainer(const list<FlowImpl *> &value);
-    list<SystemImpl *> getSystemContainer() const;
+    list<SystemImpl*> getSystemContainer() const;
     void setSystemContainer(const list<SystemImpl *> &value);
 
     list<SystemImpl*>::iterator getSystemContainerBegin();
@@ -41,6 +41,8 @@ public:
     void showResults();
 
     virtual ~ModelImpl();
+
+    friend class UnitaryTestsModel;
 };
 
 #endif // MODELIMPL_H

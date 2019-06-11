@@ -23,10 +23,11 @@ public:
     void setName(const string &value);
 
     void connect(SystemImpl*, SystemImpl*);
-
     virtual double execute() = 0;
 
     virtual ~FlowImpl();
+
+    friend class UnitaryTestsFlow;
 };
 
 #endif // FLOWIMPL_H

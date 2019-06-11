@@ -18,6 +18,8 @@ public:
     void setLabel(const string &value);
 
     virtual ~SystemImpl();
+
+    friend class UnitaryTestsSystem;
 };
 
 #endif // SYSTEMIMPL_H
