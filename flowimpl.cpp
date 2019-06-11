@@ -1,21 +1,21 @@
 #include "flowimpl.h"
 
-SystemImpl* FlowImpl::getOrigin() const
+System* FlowImpl::getOrigin() const
 {
     return origin;
 }
 
-void FlowImpl::setOrigin(SystemImpl *value)
+void FlowImpl::setOrigin(System *value)
 {
     origin = value;
 }
 
-SystemImpl* FlowImpl::getDestination() const
+System* FlowImpl::getDestination() const
 {
     return destination;
 }
 
-void FlowImpl::setDestination(SystemImpl *value)
+void FlowImpl::setDestination(System *value)
 {
     destination = value;
 }
@@ -40,7 +40,7 @@ void FlowImpl::setName(const string &value)
     name = value;
 }
 
-void FlowImpl::connect(SystemImpl *system1, SystemImpl *system2)
+void FlowImpl::connect(System *system1, System *system2)
 {
     setOrigin(system1);
     setDestination(system2);
@@ -51,6 +51,18 @@ FlowImpl::~FlowImpl()
 
 }
 
+FlowImpl &FlowImpl::operator=(FlowImpl &copy)
+{
+    if(&copy == this) return (*this);
+
+    origin = copy.origin;
+    destination = copy.destination;
+    currentEnergy = copy.currentEnergy;
+    name = copy.name;
+
+    return (*this);
+}
+
 FlowImpl::FlowImpl()
 {
     setCurrentEnergy(0);
@@ -58,9 +70,17 @@ FlowImpl::FlowImpl()
     setName("-");
 }
 
-FlowImpl::FlowImpl(SystemImpl *s1, SystemImpl *s2, string name)
+FlowImpl::FlowImpl(System *s1, System *s2, string name)
 {
     setCurrentEnergy(0);
     connect(s1, s2);
     setName(name);
+}
+
+FlowImpl::FlowImpl(Flow *copy)
+{
+    origin = copy->getOrigin();
+    destination = copy->getDestination();
+    currentEnergy = copy->getCurrentEnergy();
+    name = copy->getName();
 }

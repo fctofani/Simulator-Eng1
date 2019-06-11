@@ -39,4 +39,23 @@ short UnitaryTestsSystem::unitaryTestSetLabel()
     return 1;
 }
 
+short UnitaryTestsSystem::unitaryTestAssignmentOperator()
+{
+    SystemImpl s(300, "A");
+    SystemImpl t(600, "B");
+    t = s;
+    assert(t.getLabel() == "A");
+    assert(fabs(t.getEnergy() - 300) <= 0.0001);
+    return 1;
+}
+
+short UnitaryTestsSystem::unitaryTestCopyConstructor()
+{
+    SystemImpl s(400, "A");
+    SystemImpl t(s);
+    assert(t.getLabel() == "A");
+    assert(fabs(t.getEnergy() - 400) <= 0.0001);
+    return 1;
+}
+
 

@@ -7,10 +7,14 @@ class UnitaryTestsSystem
 {
 public:
     UnitaryTestsSystem();
+
     short unitaryTestGetEnergy();
     short unitaryTestSetEnergy();
     short unitaryTestGetLabel();
     short unitaryTestSetLabel();
+
+    short unitaryTestAssignmentOperator();
+    short unitaryTestCopyConstructor();
 };
 
 #endif // UNITARYTESTSSYSTEM_H

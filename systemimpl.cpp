@@ -32,7 +32,23 @@ SystemImpl::SystemImpl(double energy, string label)
     setLabel(label);
 }
 
+SystemImpl::SystemImpl(System* copy)
+{
+    energy = copy->getEnergy();
+    label = copy->getLabel();
+}
+
 SystemImpl::~SystemImpl()
 {
 
+}
+
+SystemImpl &SystemImpl::operator=(SystemImpl &copy)
+{
+    if(&copy == this) return (*this);
+
+    energy = copy.energy;
+    label = copy.label;
+
+    return (*this);
 }

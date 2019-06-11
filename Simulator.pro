@@ -15,9 +15,12 @@ SOURCES += \
         unitarytestssystem.cpp
 
 HEADERS += \
+    flow.h \
     flowimpl.h \
     functional.h \
+    model.h \
     modelimpl.h \
+    system.h \
     systemimpl.h \
     unitary.h \
     unitarytestsflow.h \

@@ -16,5 +16,6 @@ int main()
     flowUnitaryTests();
     modelUnitaryTests();
 
+    cout << endl << endl;
     return 0;
 }

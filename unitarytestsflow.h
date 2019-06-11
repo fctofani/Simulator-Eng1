@@ -15,8 +15,12 @@ public:
     short UnitaryTestSetCurrentEnergy();
     short UnitaryTestGetName();
     short UnitaryTestSetName();
+
     short UnitaryTestConnect();
     short UnitaryTestExecute();
+
+    short UnitaryTestAssignmentOperator();
+    short UnitaryTestCopyConstructor();
 };
 
 #endif // UNITARYTESTSFLOW_H

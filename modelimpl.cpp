@@ -33,52 +33,52 @@ void ModelImpl::setFinish(int value)
     finish = value;
 }
 
-list<FlowImpl *> ModelImpl::getFlowContainer() const
+list<Flow*> ModelImpl::getFlowContainer() const
 {
     return flowContainer;
 }
 
-void ModelImpl::setFlowContainer(const list<FlowImpl *> &value)
+void ModelImpl::setFlowContainer(const list<Flow*> &value)
 {
     flowContainer = value;
 }
 
-list<SystemImpl *> ModelImpl::getSystemContainer() const
+list<System*> ModelImpl::getSystemContainer() const
 {
     return systemContainer;
 }
 
-void ModelImpl::setSystemContainer(const list<SystemImpl *> &value)
+void ModelImpl::setSystemContainer(const list<System*> &value)
 {
     systemContainer = value;
 }
 
-list<SystemImpl*>::iterator ModelImpl::getSystemContainerBegin()
+list<System*>::iterator ModelImpl::getSystemContainerBegin()
 {
     return systemContainer.begin();
 }
 
-list<SystemImpl*>::iterator ModelImpl::getSystemContainerEnd()
+list<System*>::iterator ModelImpl::getSystemContainerEnd()
 {
     return systemContainer.end();
 }
 
-list<FlowImpl*>::iterator ModelImpl::getFlowContainerBegin()
+list<Flow*>::iterator ModelImpl::getFlowContainerBegin()
 {
     return flowContainer.begin();
 }
 
-list<FlowImpl*>::iterator ModelImpl::getFlowContainerEnd()
+list<Flow*>::iterator ModelImpl::getFlowContainerEnd()
 {
     return flowContainer.end();
 }
 
-void ModelImpl::add(SystemImpl *system)
+void ModelImpl::add(System*system)
 {
     systemContainer.push_back(system);
 }
 
-void ModelImpl::add(FlowImpl *flow)
+void ModelImpl::add(Flow*flow)
 {
     flowContainer.push_back(flow);
 }
@@ -93,11 +93,11 @@ void ModelImpl::run(int start, int finish)
             flow->setCurrentEnergy(flow->execute());
         }
 
-        for (list<FlowImpl*>::iterator it = getFlowContainerBegin(); it != getFlowContainerEnd(); ++it) {
-            SystemImpl* source = (*it)->getOrigin();
+        for (list<Flow*>::iterator it = getFlowContainerBegin(); it != getFlowContainerEnd(); ++it) {
+            System* source = (*it)->getOrigin();
             if(source != nullptr) source->setEnergy(source->getEnergy() - (*it)->getCurrentEnergy());
 
-            SystemImpl* sink = (*it)->getDestination();
+            System* sink = (*it)->getDestination();
             if(sink != nullptr) sink->setEnergy(sink->getEnergy() + (*it)->getCurrentEnergy());
         }
     }
@@ -118,9 +118,64 @@ ModelImpl::~ModelImpl()
 
 }
 
+ModelImpl &ModelImpl::operator=(ModelImpl &copy)
+{
+    if(&copy == this) return (*this);
+
+    name = copy.name;
+    start = copy.start;
+    finish = copy.finish;
+
+    for (auto&& item : flowContainer) {
+        delete item;
+    }
+    for (auto&& item : systemContainer){
+        delete item;
+    }
+
+    System* aux;
+    for(list<System*>::iterator it = copy.getSystemContainerBegin(); it != copy.getSystemContainerEnd(); ++it){
+        aux = (*it);
+        add(aux);
+    }
+    Flow* bux;
+    for(list<Flow*>::iterator it = copy.getFlowContainerBegin(); it != copy.getFlowContainerEnd(); ++it){
+        bux = (*it);
+        add(bux);
+    }
+
+    return (*this);
+}
+
 ModelImpl::ModelImpl()
 {
-    start = 0;
-    finish = 100;
-    name = "-";
+    setStart(0);
+    setFinish(100);
+    setName("-");
+}
+
+ModelImpl::ModelImpl(ModelImpl &copy)
+{
+    name = copy.name;
+    start = copy.start;
+    finish = copy.finish;
+
+    for (auto&& item : flowContainer) {
+        delete item;
+    }
+    for (auto&& item : systemContainer){
+        delete item;
+    }
+
+    System* aux;
+    for(list<System*>::iterator it = copy.getSystemContainerBegin(); it != copy.getSystemContainerEnd(); ++it){
+        aux = (*it);
+        add(aux);
+    }
+    Flow* bux;
+    for(list<Flow*>::iterator it = copy.getFlowContainerBegin(); it != copy.getFlowContainerEnd(); ++it){
+        bux = (*it);
+        add(bux);
+    }
+
 }

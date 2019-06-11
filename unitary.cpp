@@ -15,6 +15,10 @@ void systemUnitaryTests()
     test.unitaryTestGetLabel();
     test.unitaryTestSetLabel();
 
+    // Canonical
+    test.unitaryTestAssignmentOperator();
+    test.unitaryTestCopyConstructor();
+
     cout << "\n System tests passed!" << endl;
 }
 
@@ -35,6 +39,10 @@ void flowUnitaryTests()
     // Main Functions
     test.UnitaryTestConnect();
     test.UnitaryTestExecute();
+
+    // Canonical
+    test.UnitaryTestAssignmentOperator();
+    test.UnitaryTestCopyConstructor();
 
     cout << "\n Flow tests passed!" << endl;
 }
@@ -62,6 +70,10 @@ void modelUnitaryTests()
     // Main Functions
     test.UnitaryTestsAddSystem();
     test.UnitaryTestsAddFlow();
+
+    // Canonical
+    test.UnitaryTestAssignmentOperator();
+    test.UnitaryTestCopyConstructor();
 
     cout << "\n Model tests passed!" << endl;
 }

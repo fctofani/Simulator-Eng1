@@ -1,4 +1,6 @@
 #include "unitarytestsmodel.h"
+#include "systemimpl.h"
+#include "flowimpl.h"
 #include <cassert>
 #include <cmath>
 
@@ -61,7 +63,7 @@ short UnitaryTestsModel::UnitaryTestsSetFinish()
 
 short UnitaryTestsModel::UnitaryTestsGetFlowContainer()
 {
-    std::list<FlowImpl*> l;
+    std::list<Flow*> l;
     ModelImpl m;
     m.flowContainer = l;
     assert(m.getFlowContainer() == l);
@@ -70,7 +72,7 @@ short UnitaryTestsModel::UnitaryTestsGetFlowContainer()
 
 short UnitaryTestsModel::UnitaryTestsSetFlowContainer()
 {
-    std::list<FlowImpl*> l;
+    std::list<Flow*> l;
     ModelImpl m;
     m.setFlowContainer(l);
     assert(m.flowContainer == l);
@@ -79,7 +81,7 @@ short UnitaryTestsModel::UnitaryTestsSetFlowContainer()
 
 short UnitaryTestsModel::UnitaryTestsGetSystemContainer()
 {
-    std::list<SystemImpl*> l;
+    std::list<System*> l;
     ModelImpl m;
     m.systemContainer = l;
     assert(m.getSystemContainer() == l);
@@ -88,7 +90,7 @@ short UnitaryTestsModel::UnitaryTestsGetSystemContainer()
 
 short UnitaryTestsModel::UnitaryTestsSetSystemContainer()
 {
-    std::list<SystemImpl*> l;
+    std::list<System*> l;
     ModelImpl m;
     m.setSystemContainer(l);
     assert(m.systemContainer == l);
@@ -126,10 +128,11 @@ short UnitaryTestsModel::UnitaryTestsGetSystemContainerEnd()
 short UnitaryTestsModel::UnitaryTestsAddSystem()
 {
     ModelImpl m;
-    SystemImpl s;
-    m.add(&s);
-    std::list<SystemImpl*>::iterator it = m.systemContainer.begin();
-    assert((*it) == &s);
+    System* s = new SystemImpl();
+    m.add(s);
+    std::list<System*>::iterator it = m.systemContainer.begin();
+    assert((*it) == s);
+    delete static_cast<SystemImpl*>(s);
     return 1;
 }
 
@@ -140,9 +143,71 @@ short UnitaryTestsModel::UnitaryTestsAddFlow()
     };
 
     ModelImpl m;
-    TestFlow f;
-    m.add(&f);
-    std::list<FlowImpl*>::iterator it = m.flowContainer.begin();
-    assert((*it) == &f);
+    Flow* f = new TestFlow();
+    m.add(f);
+    std::list<Flow*>::iterator it = m.flowContainer.begin();
+    assert((*it) == f);
+    delete static_cast<FlowImpl*>(f);
+    return 1;
+}
+
+short UnitaryTestsModel::UnitaryTestAssignmentOperator()
+{
+    class TestFlow : public FlowImpl{
+        double execute(){return 0.01;}
+    };
+    ModelImpl m;
+    m.setName("M");
+    System* s = new SystemImpl(200, "S");
+    System* t = new SystemImpl(400, "T");
+    Flow* f = new TestFlow;
+    f->connect(s, t);
+
+    m.add(s);
+    m.add(t);
+    m.add(f);
+
+    ModelImpl n;
+    n = m;
+
+    assert(n.getName() == "M");
+    assert(n.getSystemContainer().front() == s);
+    assert(n.getSystemContainer().back() == t);
+    assert(n.getFlowContainer().front() == f);
+
+    delete static_cast<FlowImpl*>(f);
+    delete static_cast<SystemImpl*>(s);
+    delete static_cast<SystemImpl*>(t);
+
+    return 1;
+}
+
+short UnitaryTestsModel::UnitaryTestCopyConstructor()
+{
+    class TestFlow : public FlowImpl{
+        double execute(){return 0.01;}
+    };
+    ModelImpl m;
+    m.setName("M");
+    System* s = new SystemImpl(200, "S");
+    System* t = new SystemImpl(400, "T");
+    Flow* f = new TestFlow;
+    f->connect(s, t);
+
+    m.add(s);
+    m.add(t);
+    m.add(f);
+
+    ModelImpl n(m);
+
+    assert(n.getName() == "M");
+    assert(n.getSystemContainer().front() == s);
+    assert(n.getSystemContainer().back() == t);
+    assert(n.getFlowContainer().front() == f);
+
+    delete static_cast<FlowImpl*>(f);
+    delete static_cast<SystemImpl*>(s);
+    delete static_cast<SystemImpl*>(t);
+
     return 1;
 }
