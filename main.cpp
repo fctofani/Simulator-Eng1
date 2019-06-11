@@ -8,13 +8,13 @@ using namespace std;
 
 int main()
 {
-    exponentialFunctionalTest();
-    logisticalFunctionalTest();
-    multiExponentialFunctionalTest();
-
     systemUnitaryTests();
     flowUnitaryTests();
     modelUnitaryTests();
+
+    exponentialFunctionalTest();
+    logisticalFunctionalTest();
+    multiExponentialFunctionalTest();
 
     cout << endl << endl;
     return 0;

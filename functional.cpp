@@ -1,16 +1,15 @@
 #include <cmath>
 #include <cassert>
 
-#include "systemimpl.h"
+#include "system.h"
 #include "flowimpl.h"
-#include "modelimpl.h"
+#include "model.h"
 #include "functional.h"
 
 class FlowExp : public FlowImpl
 {
 public:
-    FlowExp() : FlowImpl(){}
-    FlowExp(System *s1, System *s2, string n) : FlowImpl (s1, s2, n){}
+    FlowExp(){}
     double execute(){return (getOrigin()->getEnergy()) * 0.01;}
     virtual ~FlowExp(){}
 };
@@ -18,8 +17,7 @@ public:
 class FlowLog : public FlowImpl
 {
 public:
-    FlowLog() : FlowImpl(){}
-    FlowLog(System *s1, System *s2, string n) : FlowImpl (s1, s2, n){}
+    FlowLog(){}
     double execute(){return (1 - getDestination()->getEnergy()/70) * 0.01 * getDestination()->getEnergy();}
     virtual ~FlowLog(){}
 };
@@ -28,16 +26,12 @@ public:
 
 void exponentialFunctionalTest()
 {
-    Model* m = new ModelImpl();
+    Model* m = Model::instance();
 
-    System* pop1 = new SystemImpl(100, "pop1");
-    System* pop2 = new SystemImpl(0, "pop2");
+    System* pop1 = m->createSystem(100, "pop1");
+    System* pop2 = m->createSystem(0, "pop2");
 
-    Flow* exponential = new FlowExp(pop1, pop2, "exponential");
-
-    m->add(pop1);
-    m->add(pop2);
-    m->add(exponential);
+    Flow* exponential = m->createFlow<FlowExp>(pop1, pop2, "exponential");
 
     m->run(0, 100);
 
@@ -46,24 +40,19 @@ void exponentialFunctionalTest()
     assert(fabs(pop1->getEnergy() - 36.6032) <= 0.0001);
     assert(fabs(pop2->getEnergy() - 63.3968) <= 0.0001);
 
-    delete static_cast<SystemImpl*>(pop1);
-    delete static_cast<SystemImpl*>(pop2);
-    delete static_cast<FlowImpl*>(exponential);
-    delete static_cast<ModelImpl*>(m);
+    m->destroySystem(pop1);
+    m->destroySystem(pop2);
+    m->destroyFlow<FlowExp>(exponential);
 }
 
 void logisticalFunctionalTest()
 {
-    Model* m = new ModelImpl();
+    Model* m = Model::instance();
 
-    System* p1 = new SystemImpl(100, "p1");
-    System* p2 = new SystemImpl(10, "p2");
+    System* p1 = m->createSystem(100, "p1");
+    System* p2 = m->createSystem(10, "p2");
 
-    Flow* logistical = new FlowLog(p1, p2, "logistical");
-
-    m->add(p1);
-    m->add(p2);
-    m->add(logistical);
+    Flow* logistical = m->createFlow<FlowLog>(p1, p2, "logistical");
 
     m->run(0, 100);
 
@@ -72,40 +61,26 @@ void logisticalFunctionalTest()
     assert(fabs(p1->getEnergy() - 88.2167) <= 0.0001);
     assert(fabs(p2->getEnergy() - 21.7834) <= 0.0001);
 
-    delete static_cast<SystemImpl*>(p1);
-    delete static_cast<SystemImpl*>(p2);
-    delete static_cast<FlowImpl*>(logistical);
-    delete static_cast<ModelImpl*>(m);
+    m->destroySystem(p1);
+    m->destroySystem(p2);
+    m->destroyFlow<FlowLog>(logistical);
 }
 
 void multiExponentialFunctionalTest()
 {
-    Model* m = new ModelImpl();
+    Model* m = Model::instance();
 
-    System* q1 = new SystemImpl(100, "q1");
-    System* q2 = new SystemImpl(0, "q2");
-    System* q3 = new SystemImpl(100, "q3");
-    System* q4 = new SystemImpl(0, "q4");
-    System* q5 = new SystemImpl(0, "q5");
-    Flow* f = new FlowExp(q1, q2, "f");
-    Flow* g = new FlowExp(q1, q3, "g");
-    Flow* r = new FlowExp(q2, q5, "r");
-    Flow* t = new FlowExp(q2, q3, "t");
-    Flow* u = new FlowExp(q3, q4, "u");
-    Flow* v = new FlowExp(q4, q1, "v");
-
-    m->add(q1);
-    m->add(q2);
-    m->add(q3);
-    m->add(q4);
-    m->add(q5);
-
-    m->add(f);
-    m->add(g);
-    m->add(r);
-    m->add(t);
-    m->add(u);
-    m->add(v);
+    System* q1 = m->createSystem(100, "q1");
+    System* q2 = m->createSystem(0, "q2");
+    System* q3 = m->createSystem(100, "q3");
+    System* q4 = m->createSystem(0, "q4");
+    System* q5 = m->createSystem(0, "q5");
+    Flow* f = m->createFlow<FlowExp>(q1, q2, "f");
+    Flow* g = m->createFlow<FlowExp>(q1, q3, "g");
+    Flow* r = m->createFlow<FlowExp>(q2, q5, "r");
+    Flow* t = m->createFlow<FlowExp>(q2, q3, "t");
+    Flow* u = m->createFlow<FlowExp>(q3, q4, "u");
+    Flow* v = m->createFlow<FlowExp>(q4, q1, "v");
 
     m->run(0, 100);
 
@@ -117,16 +92,15 @@ void multiExponentialFunctionalTest()
     assert(fabs(q4->getEnergy() - 56.1728) <= 0.0001);
     assert(fabs(q5->getEnergy() - 16.4612) <= 0.0001);
 
-    delete static_cast<SystemImpl*>(q1);
-    delete static_cast<SystemImpl*>(q2);
-    delete static_cast<SystemImpl*>(q3);
-    delete static_cast<SystemImpl*>(q4);
-    delete static_cast<SystemImpl*>(q5);
-    delete static_cast<FlowImpl*>(f);
-    delete static_cast<FlowImpl*>(g);
-    delete static_cast<FlowImpl*>(r);
-    delete static_cast<FlowImpl*>(t);
-    delete static_cast<FlowImpl*>(u);
-    delete static_cast<FlowImpl*>(v);
-    delete static_cast<ModelImpl*>(m);
+    m->destroySystem(q1);
+    m->destroySystem(q2);
+    m->destroySystem(q3);
+    m->destroySystem(q4);
+    m->destroySystem(q5);
+    m->destroyFlow<FlowExp>(f);
+    m->destroyFlow<FlowExp>(g);
+    m->destroyFlow<FlowExp>(r);
+    m->destroyFlow<FlowExp>(t);
+    m->destroyFlow<FlowExp>(u);
+    m->destroyFlow<FlowExp>(v);
 }

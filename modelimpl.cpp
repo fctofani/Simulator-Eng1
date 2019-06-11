@@ -1,5 +1,18 @@
 #include <iostream>
 #include "modelimpl.h"
+#include "systemimpl.h"
+#include "flowimpl.h"
+
+Model* Model::instance()
+{
+    return (ModelImpl::instance());
+}
+
+ModelImpl* ModelImpl::instance()
+{
+    static ModelImpl _instance;
+    return &_instance;
+}
 
 string ModelImpl::getName() const
 {
@@ -73,6 +86,19 @@ list<Flow*>::iterator ModelImpl::getFlowContainerEnd()
     return flowContainer.end();
 }
 
+System *ModelImpl::createSystem(double energy, string name)
+{
+    System* s = new SystemImpl(energy, name);
+    add(s);
+    return s;
+}
+
+void ModelImpl::destroySystem(System *s)
+{
+    remove(s);
+    delete static_cast<SystemImpl*>(s);
+}
+
 void ModelImpl::add(System*system)
 {
     systemContainer.push_back(system);
@@ -81,6 +107,16 @@ void ModelImpl::add(System*system)
 void ModelImpl::add(Flow*flow)
 {
     flowContainer.push_back(flow);
+}
+
+void ModelImpl::remove(System *s)
+{
+    systemContainer.remove(s);
+}
+
+void ModelImpl::remove(Flow* f)
+{
+    flowContainer.remove(f);
 }
 
 void ModelImpl::run(int start, int finish)

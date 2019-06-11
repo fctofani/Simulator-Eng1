@@ -13,9 +13,19 @@ protected:
     int finish;
     list<System*> systemContainer;
     list<Flow*> flowContainer;
-public:
+
     ModelImpl();
     ModelImpl(ModelImpl&);
+    ModelImpl& operator=(ModelImpl&);
+
+    void add(System*);
+    void add(Flow*);
+    void remove(System*);
+    void remove(Flow*);
+
+public:
+    static ModelImpl* instance();
+
     string getName() const;
     void setName(const string &value);
     int getStart() const;
@@ -33,16 +43,17 @@ public:
     list<Flow*>::iterator getFlowContainerBegin();
     list<Flow*>::iterator getFlowContainerEnd();
 
-    void add(System*);
-    void add(Flow*);
+    System* createSystem(double, string);
+    Flow* createFlow(System*, System*, string);
+
+    void destroySystem(System*);
+    void destroyFlow(Flow*);
 
     void run(int, int);
 
     void showResults();
 
-    virtual ~ModelImpl();
-
-    ModelImpl& operator=(ModelImpl&);
+    virtual ~ModelImpl();    
 
     friend class UnitaryTestsModel;
 };

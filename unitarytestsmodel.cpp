@@ -151,6 +151,17 @@ short UnitaryTestsModel::UnitaryTestsAddFlow()
     return 1;
 }
 
+short UnitaryTestsModel::UnitaryTestsRemoveSystem()
+{
+    ModelImpl m;
+    System* s = new SystemImpl();
+    m.systemContainer.push_back(s);
+    assert(m.systemContainer.front() == s);
+    m.remove(s);
+    assert(m.systemContainer.front() != s);
+    return 1;
+}
+
 short UnitaryTestsModel::UnitaryTestAssignmentOperator()
 {
     class TestFlow : public FlowImpl{
