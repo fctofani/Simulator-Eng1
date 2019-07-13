@@ -5,6 +5,13 @@
 
 #include <list>
 
+/*! \class Model (Implementation)
+ * \brief Model represents a conjunction of systems and flows.
+ *
+ * \details The model stores all systems and flows you want to evaluate. The model would be a country which stores systems (cities) and flows
+ * (people changing cities), for example.
+*/
+
 class ModelImpl : public Model
 {
 protected:
@@ -44,10 +51,10 @@ public:
     list<Flow*>::iterator getFlowContainerEnd();
 
     System* createSystem(double, string);
-    Flow* createFlow(System*, System*, string);
+//    Flow* createFlow(System*, System*, string);
 
     void destroySystem(System*);
-    void destroyFlow(Flow*);
+//    void destroyFlow(Flow*);
 
     void run(int, int);
 

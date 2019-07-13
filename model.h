@@ -35,6 +35,7 @@ public:
     virtual list<Flow*>::iterator getFlowContainerEnd() = 0;
 
     virtual System* createSystem(double, string) = 0;
+
     template<class T>
     Flow* createFlow(System*s1, System*s2, string name){
         Flow* f = new T();

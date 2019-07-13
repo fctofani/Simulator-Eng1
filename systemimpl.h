@@ -6,6 +6,12 @@
 #include <string>
 using namespace std;
 
+/*! \class System (Implementation)
+ * \brief System, which represents any component that can store something
+ *
+ * \details The system is a representation of any kind of element that is capable of storing energy, which might be a population, where it's energy is
+ * represented by individuals on that population.
+*/
 class SystemImpl : public System
 {
 protected:

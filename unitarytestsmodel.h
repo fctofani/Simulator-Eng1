@@ -26,6 +26,7 @@ public:
     short UnitaryTestsAddSystem();
     short UnitaryTestsAddFlow();
     short UnitaryTestsRemoveSystem();
+    short UnitaryTestRemoveFlow();
     short UnitaryTestsRun();
     short UnitaryTestsShowResults();
 

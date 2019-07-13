@@ -71,6 +71,7 @@ void modelUnitaryTests()
     test.UnitaryTestsAddSystem();
     test.UnitaryTestsAddFlow();
     test.UnitaryTestsRemoveSystem();
+    test.UnitaryTestRemoveFlow();
 
     // Canonical
 //    test.UnitaryTestAssignmentOperator();

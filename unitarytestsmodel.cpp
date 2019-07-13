@@ -162,6 +162,21 @@ short UnitaryTestsModel::UnitaryTestsRemoveSystem()
     return 1;
 }
 
+short UnitaryTestsModel::UnitaryTestRemoveFlow()
+{
+    class TestFlow : public FlowImpl{
+        double execute(){return 0.01;}
+    };
+
+    ModelImpl m;
+    Flow* f = new TestFlow();
+    m.flowContainer.push_back(f);
+    assert(m.flowContainer.front() == f);
+    m.remove(f);
+    assert(m.flowContainer.front() != f);
+    return 1;
+}
+
 short UnitaryTestsModel::UnitaryTestAssignmentOperator()
 {
     class TestFlow : public FlowImpl{

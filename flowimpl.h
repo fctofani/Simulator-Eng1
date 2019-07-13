@@ -3,6 +3,11 @@
 
 #include "flow.h"
 
+/*! \class Flow (Implementation)
+ *  \brief Flow, which represents a exchange of energy between any quantity of systems.
+ *
+ *  \details Flow may be represented via the number of people who migrate from city a to city b, where cities would be systems.
+*/
 class FlowImpl : public Flow
 {
 protected:
